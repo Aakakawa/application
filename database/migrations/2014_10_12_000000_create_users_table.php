@@ -21,10 +21,10 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
             $table->integer('age')->nullable();
             $table->text('sex')->nullable();
             $table->text('image')->nullable();
-            $table->softDeletes();
         });
     }
 

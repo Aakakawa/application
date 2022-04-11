@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePicturesTable extends Migration
+class CreateCommentPictureTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,11 +15,11 @@ class CreatePicturesTable extends Migration
     {
         Schema::create('commentPictures', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->image('image')->nullable()->change();
+            $table->text('image')->nullable()->change();
             $table->timestamps();
-            $table->integer('article_id')->unsigned();
-            $table->integer('comment_id')->unsigned();
             $table->softDeletes();
+            $table->bigInteger('comment_id')->unsigned();
+            $table->foreign('comment_id')->references('id')->on('comments')->onDelete('cascade');
         });
     }
 

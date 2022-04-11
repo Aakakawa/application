@@ -5,19 +5,13 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-
-class Fav_Article extends Model
+class ArticlePicture extends Model
 {
     use SoftDeletes;
     
     protected $fillable = [
-        'user_id', 'article_id'
+        'image', 'article_id'
     ];
-    
-    public function user()
-    {
-        return $this->belongsTo('App\User');
-    }
     
     public function article()
     {

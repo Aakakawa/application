@@ -2,58 +2,55 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Model
+class User extends Authenticatable
 {
     use Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
+    
     protected $fillable = [
         'name', 'email', 'password',
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
     protected $hidden = [
         'password', 'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
     
     public function articles()
     {
-        return $this->hasMany('App\Article','article_id');
+        return $this->hasMany('App\Article');
     }
     
     public function comments()
     {
-        return $this->hasMany('App\Comment','comment_id');
+        return $this->hasMany('App\Comment');
     }
     
     public function Fav_Articles()
     {
-        return $this->hasMany('App\Fav_Article','Fav_Article_id');
+        return $this->hasMany('App\Fav_Article');
     }
     
     public function Fav_Comments()
     {
-        return $this->hasMany('Fav_Comment','Fav_comment_id');
+        return $this->hasMany('App\Fav_Comment');
+    }
+    
+    public function users()
+    {
+        return $this->belongsToMany('App\user','following_user_id','followed_user_id');
+    }
+    
+    public function follows()
+    {
+        return $this->belongsToMany('App\follow','follow','followed_user_id','following_user_id');
     }
 }

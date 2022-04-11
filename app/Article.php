@@ -2,62 +2,50 @@
 
 namespace App;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class User extends Model
+class Article extends Model
 {
-    use Notifiable;
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
+    use SoftDeletes;
+    
     protected $fillable = [
-        'name', 'email', 'password',
-    ];
-
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
+        'user_id',
+        'body',
+        'category_id',
     ];
     
-    public function users()
+    public function user()
     {
-        return $this->hasMany('App\User','user_id');
+        return $this->belongsTo('App\User');
     }
     
     public function fav_articles()
     {
-        return $this->hasMany('App\Fav_Article','Fav_Article_id');
+        return $this->hasMany('App\Fav_Article');
     }
     
     public function comments()
     {
-        return $this->hasMany('App\Comment','comment_id');
+        return $this->hasMany('App\Comment');
     }
     
-    public function category()
+    public function categories()
     {
-        return $this->belongsTo('App\category','category_id');
+        return $this->belongsToMany('App\Category');
     }
     public function pictures()
     {
-        return $this->hasMany('App\picture','picture_id');
+        return $this->hasMany('App\ArticlePicture');
     }
+    
+    public function getByLimit(int $limit_count = 10)
+    {
+    // created_atで降順に並べたあと、limitで件数制限をかける
+    return $this::with('categories')->orderBy('created_at', 'DESC')->paginate($limit_count);
+    }
+    
+    //protected $fillable = [
+      //  'body',
+    //];
 }
