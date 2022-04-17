@@ -88,8 +88,18 @@
         <form action="/articles/{{ $article->id }}" id="form_{{ $article->id }}" method="post" style="display:inline">
             @csrf
             @method('DELETE')
-            <button type="submit">投稿を削除する</button> 
+            <button type="submit">投稿を削除する</button>
         </form>
+        <form action="/comments/{{ $article->id }}" method="POST">
+            @csrf
+            <textarea name="comment[body]" placeholder="質問内容１～4,000文字"></textarea>
+            <button type="submit">コメントする</button>
+        </form>
+        <div class="comment">
+            @foreach($comments as $comment)
+            <p>{{ $comment->body}}</p>
+            @endforeach
+        </div>
     </body>
 </html>
 @endsection

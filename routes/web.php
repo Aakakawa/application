@@ -20,7 +20,6 @@ Route::get('/articles/{article}/edit', 'ArticleController@edit');
 Route::put('/articles/{article}', 'ArticleController@update');
 Route::delete('/articles/{article}', 'ArticleController@delete');
 Route::get('/categories/{category}', 'CategoryController@index');
-
-Route::get('/home', 'HomeController@index')->name('home');
+Route::post('/comments/{article}','CommentController@comment');
 });
 Auth::routes();

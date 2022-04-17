@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Article;
+use App\Comment;
 use App\Category;
 use App\Http\Requests\ArticleRequest;
 use App\ArticlePicture;
@@ -15,10 +16,11 @@ class ArticleController extends Controller
         return view('articles/index')->with(['articles' => $article->getByLimit()]);
     }
     
-    public function show(Article $article,ArticlePicture $articlepicture)
+    public function show(Article $article,ArticlePicture $articlepicture,Comment $comment)
     {
         $image = $articlepicture->where('article_id',$article->id)->first();
-        return view('articles/show')->with(['article' => $article,'image' => $image]);
+        $comments = $comment->where('article_id',$article->id)->get();
+        return view('articles/show')->with(['article' => $article,'image' => $image,'comments' => $comments]);
     }
     
     public function add()
